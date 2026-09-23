@@ -30,8 +30,8 @@ while (true) {
         case $line === "list":
             $command->list();
             break;
-        case preg_match('/^detail (\d+)$/', $line, $matches):
-            $command->detail((int) $matches[1]);
+        case $line === "detail":
+            $command->detail();
             break;
         case preg_match('/^create (.+) (.+) (.+)$/', $line, $matches):
             $command->create($matches[1], $matches[2], $matches[3]);

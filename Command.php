@@ -80,15 +80,65 @@ class Command
         }
     }
 
-    public function detail(int $id): void
+    public function detail(): void
     {
         try {
-            $contact = $this->contactManager->findById($id);
-            if ($contact === null) { 
-                echo "Aucun contact trouvé avec l'ID $id.\n";
-                return;}
+            $field = readline("Quel champ voulez-vous utiliser pour la recherche ? (id/name/email/phone) : ");
 
-            echo $contact . "\n";
+            while (!in_array($field, ['id', 'name', 'email', 'phone'], true)) {
+                echo "Champ invalide. Utilisez id, name, email ou phone.\n";
+                $field = readline("Quel champ voulez-vous utiliser pour la recherche ? (id/name/email/phone) : ");  
+            }
+
+            $value = readline("Valeur : ");
+
+            switch ($field) {
+                case 'id':
+                    $contact = $this->contactManager->findById((int) $value);
+
+                    if ($contact === null) {
+                        echo "Aucun contact trouvé avec l'ID $value.\n";
+                        return;
+                    }
+                    echo $contact . "\n";
+                    break;
+                case 'name':
+                    $contacts = $this->contactManager->findByName($value);
+
+                    if (empty($contacts)) {
+                        echo "Aucun contact trouvé avec le nom '$value'.\n";
+                        return;
+                    }
+
+                    foreach ($contacts as $contact) {
+                        echo $contact . "\n";
+                    }
+                    break;
+                case 'email':
+                    $contact = $this->contactManager->findByEmail($value);
+
+                    if ($contact === null) {
+                        echo "Aucun contact trouvé avec l'email '$value'.\n";
+                        return;
+                    }
+                    echo $contact . "\n";
+                    break;
+                case 'phone':
+                    $contact = $this->contactManager->findByPhone($value);
+                    
+                    if ($contact === null) {
+                        echo "Aucun contact trouvé avec le numéro de téléphone '$value'.\n";
+                        return;
+                    }
+                    echo $contact . "\n";
+                    break;
+            }
+            
+            if ($contact === null) { 
+                echo "Aucun contact trouvé.\n";
+                return;}
+                
+                echo $contact . "\n";
             
         } catch (Exception $e) {
             echo "Erreur : " . $e->getMessage() . "\n";

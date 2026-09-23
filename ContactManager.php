@@ -41,7 +41,7 @@ class ContactManager
 
         if ($contact) {
             return new Contact(
-                $contact['id'],
+                (int) $contact['id'],
                 $contact['name'],
                 $contact['email'],
                 $contact['phone_number']
@@ -62,7 +62,7 @@ class ContactManager
         $contacts = [];
         foreach ($rows as $row) {
             $contacts[] = new Contact(
-                $row['id'],
+                (int) $row['id'],
                 $row['name'],
                 $row['email'],
                 $row['phone_number']
@@ -82,7 +82,27 @@ class ContactManager
 
         if ($contact) {
             return new Contact(
-                $contact['id'],
+                (int) $contact['id'],
+                $contact['name'],
+                $contact['email'],
+                $contact['phone_number']
+            );
+        }
+
+        return null;
+    }
+
+    public function findByPhone(string $phone): ?Contact
+    {
+        $query = $this->pdo->prepare(
+            'SELECT id, name, email, phone_number FROM contact WHERE phone_number = :phone'
+        );
+        $query->execute(['phone' => $phone]);
+        $contact = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($contact) {
+            return new Contact(
+                (int) $contact['id'],
                 $contact['name'],
                 $contact['email'],
                 $contact['phone_number']
