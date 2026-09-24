@@ -30,8 +30,14 @@ while (true) {
         case $line === "list":
             $command->list();
             break;
+        case $line === "Compter":
+            $command->count();
+            break;
         case $line === "detail":
             $command->detail();
+            break;
+        case $line === "clone contact":
+            $command->cloneContact();
             break;
         case preg_match('/^create (.+) (.+) (.+)$/', $line, $matches):
             $command->create($matches[1], $matches[2], $matches[3]);

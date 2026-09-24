@@ -177,4 +177,92 @@ class ContactManager
             'name' => $name
         ]);
     }
+
+    public function cloneContact(Contact $contact): ?Contact
+    {
+        $query = $this->pdo->prepare(
+            'INSERT INTO contact (name, email, phone_number) VALUES (:name, :email, :phone_number)'
+        );
+
+        $query->execute([
+            'name' => $contact->getName(),
+            'email' => $contact->getEmail(),
+            'phone_number' => $contact->getPhoneNumber()
+        ]);
+
+        $newId = (int) $this->pdo->lastInsertId();
+
+        return new Contact(
+            $newId,
+            $contact->getName(),
+            $contact->getEmail(),
+            $contact->getPhoneNumber()
+        );
+    }
+
+    public function count(): int
+    {
+        $query = $this->pdo->query(
+            'SELECT COUNT(*) FROM contact'
+        );
+
+        return (int) $query->fetchColumn();
+    }
+
+    public function findDuplicateNames(): array
+    {
+        $query = $this->pdo->query(
+            'SELECT name, COUNT(*) as total FROM contact GROUP BY name HAVING count(*) > 1 ORDER BY total DESC'
+        );
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findDuplicateEmails(): array
+    {
+        $query = $this->pdo->query(
+            'SELECT email, COUNT(*) as total FROM contact GROUP BY email HAVING count(*) > 1 ORDER BY total DESC'
+        );
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findDuplicatePhoneNumbers(): array
+    {
+        $query = $this->pdo->query(
+            'SELECT phone_number, COUNT(*) as total FROM contact GROUP BY phone_number HAVING count(*) > 1 ORDER BY total DESC'
+        );
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countByName(string $name): int
+    {
+        $query = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM contact WHERE name LIKE :name'
+        );
+        $query->execute(['name' => '%' . $name . '%']);
+
+        return (int) $query->fetchColumn();
+    }
+
+    public function countByEmail(string $email): int
+    {
+        $query = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM contact WHERE email = :email'
+        );
+        $query->execute(['email' => $email]);
+
+        return (int) $query->fetchColumn();
+    }
+    
+    public function countByPhone(string $phone): int
+    {
+        $query = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM contact WHERE phone_number = :phone'
+        );
+        $query->execute(['phone' => $phone]);
+
+        return (int) $query->fetchColumn();
+    }
 }
