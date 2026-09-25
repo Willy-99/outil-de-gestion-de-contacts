@@ -326,10 +326,36 @@ class Command
         }
     }
 
-    public function delete(int $id): void
+    public function delete(): void
     {
         try {
-            $this->contactManager->delete($id);
+            $contact = $this->searchContact();
+
+            if ($contact === null) {
+                echo "Aucun contact sélectionné pour la suppression.\n";
+                return;
+            }
+            
+            echo "\nVous souhaitez supprimer le contact suivant : " 
+                . $contact ->getId() . ","
+                . $contact ->getName(). ","
+                . $contact ->getEmail(). ","
+                . $contact -> getPhoneNumber() . ",";
+                
+            $confirm = readline("Voulez-vous vraiment supprimer ce contact ? (oui/non) : ");
+            while (!in_array(strtoupper($confirm), ['OUI', 'NON'], true)) {
+                echo "Réponse invalide. Utilisez 'oui' ou 'non'.\n";
+
+                $confirm = readline("Voulez-vous vraiment supprimer ce contact ? (oui/non) : ");
+            }
+
+            if (strtoupper($confirm) === "NON") {
+                echo "Suppression annulée.\n";
+                return;
+            }
+
+            $this->contactManager->delete($contact->getId());
+
             echo "Contact supprimé avec succès.\n";
         } catch (Exception $e) {
             echo "Erreur lors de la suppression du contact : " . $e->getMessage() . "\n";

@@ -42,8 +42,8 @@ while (true) {
         case $line === "create":
             $command->create();
             break;
-        case preg_match('/^delete (\d+)$/', $line, $matches):
-            $command->delete((int) $matches[1]);
+        case $line === "delete":
+            $command->delete();
             break;
         case $line === "update":
             $command->update();
