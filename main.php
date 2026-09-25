@@ -13,6 +13,7 @@ $db = new DBConnect();
 // Vérification de la connexion à la base de données.
 if ($db->getPDO() === null) {
     echo "La connexion à la base de données a échoué.\n";
+    exit(1);
 } else {
     echo "Connexion réussie !\n";
 }

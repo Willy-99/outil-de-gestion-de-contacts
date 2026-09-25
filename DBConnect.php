@@ -21,7 +21,7 @@ class DBConnect
             $host = $_ENV['DB_HOST'];
             $dbname = $_ENV['DB_NAME'];
             $username = $_ENV['DB_USER'];
-            $password = $_ENV['DB_PASS'];
+            $password = $_ENV['DB_PASSWORD'];
 
             // Création de la connexion PDO à MySQL.
             // PDO permet à PHP de communiquer avec la base de données.
