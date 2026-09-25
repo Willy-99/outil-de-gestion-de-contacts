@@ -63,7 +63,7 @@ class Command
             echo "Vous pouvez rechercher le contact par ID, nom, email ou téléphone.\n";
             echo "Vous pourrez ensuite modifier les champs avant de créer le clone.\n";
             echo "Exemple :\n";
-            echo "  cloneContact\n";
+            echo "  clone Contact\n";
             echo "  Quel champ voulez-vous utiliser pour la recherche ? (id/name/email/phone) : id\n";
             echo "  Valeur : 5\n";
             echo "  Vous souhaitez cloner le contact suivant :\n";
@@ -263,10 +263,12 @@ class Command
         try {
             $contact = $this->searchContact();
 
-            if ($contact === null) {
-                echo "Aucun contact selectionné pour le clonage.\n";
-                return;
-            }
+            if ($contact === null) 
+                {
+                    echo "Aucun contact selectionné pour le clonage.\n";
+                    return;
+                }
+
             echo"\nContact sélectionné pour le clonage : " . $contact . "\n";
             $confirm = readline("Voulez-vous vraiment cloner ce contact ? (oui/non) : ");
             
@@ -280,15 +282,15 @@ class Command
             $email = readline("Nouvel email (Entrée pour conserver) : ");
             $phone = readline("Nouveau numéro de téléphone (Entrée pour conserver) : ");
 
-            if (!empty($name)) {
+            if (empty($name)) {
                 $name = $contact->getName();
             }
 
-            if (!empty($email)) {
+            if (empty($email)) {
                 $email = $contact->getEmail();
             }
 
-            if (!empty($phone)) {
+            if (empty($phone)) {
                 $phone = $contact->getPhoneNumber();
             }
             }else {
@@ -307,12 +309,17 @@ class Command
         } catch (Exception $e) {
             echo "Erreur lors du clonage du contact : " . $e->getMessage() . "\n";
         }
-    }   
+    }
 
-    public function create(string $name, string $email, string $phoneNumber): void
+    public function create(): void
     {
         try {
+            $name = readline("Nom : ");
+            $email = readline("Email : ");
+            $phoneNumber = readline("Numéro de téléphone : ");
+            
             $this->contactManager->create($name, $email, $phoneNumber);
+
             echo "Contact créé avec succès.\n";
         } catch (Exception $e) {
             echo "Erreur lors de la création du contact : " . $e->getMessage() . "\n";
@@ -407,27 +414,17 @@ class Command
         }
 
         $value = readline("Valeur : ");
+        $totalContact = [];
 
         switch ($field) {
             case 'name':
                 $totalContact = $this->contactManager->findByName($value);
-                //echo "Nombre de contacts avec le nom '$value' : " . count($contacts) . "\n";
                 break;
             case 'email':
-                $totalContact = $this->contactManager->findByEmail($value);
-                //if ($contact === null) {
-                //    echo "Aucun contact trouvé avec l'email '$value'.\n";
-                //} else {
-                //    echo "Nombre de contacts avec l'email '$value' : 1\n";
-                //}
+                $totalContact = $this->contactManager->findByEmail($value);                
                 break;
             case 'phone':
-                $totalContact = $this->contactManager->findByPhone($value);
-                //if ($contact === null) {
-                //    echo "Aucun contact trouvé avec le numéro de téléphone '$value'.\n";
-                //} else {
-                //    echo "Nombre de contacts avec le numéro de téléphone '$value' : 1\n";
-                //}
+                $totalContact = $this->contactManager->findByPhone($value);                
                 break;
         }
 
