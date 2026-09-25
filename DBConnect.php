@@ -1,5 +1,7 @@
 <?php
 
+// Charge le fichier autoload.php généré par Composer.
+require_once __DIR__ . '/vendor/autoload.php';
 // Classe responsable de la connexion à la base de données.
 class DBConnect
 {
@@ -11,11 +13,15 @@ class DBConnect
     public function __construct()
     {
         try {
-            // Paramètres de connexion à la base de données.
-            $host = 'localhost';
-            $dbname = 'adress_book';
-            $username = 'root';
-            $password = '';
+            // Charge le fichier .env
+            $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ .'');
+            $dotenv->load();
+
+            // Récupère les informations de connexion à la base de données depuis le fichier .env
+            $host = $_ENV['DB_HOST'];
+            $dbname = $_ENV['DB_NAME'];
+            $username = $_ENV['DB_USER'];
+            $password = $_ENV['DB_PASS'];
 
             // Création de la connexion PDO à MySQL.
             // PDO permet à PHP de communiquer avec la base de données.
