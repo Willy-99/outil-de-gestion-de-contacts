@@ -499,19 +499,10 @@ class Command
                 }
                 echo "Numéros de téléphone en double :\n";
                 foreach ($duplicates as $duplicate) {
-                    echo "Téléphone : " . $duplicate['phone'] . ", Total : " . $duplicate['total'] . "\n";
+                    echo "Téléphone : " . $duplicate['phone_number'] . ", Total : " . $duplicate['total'] . "\n";
                 }
                 break;
         }
-
-        if (empty($duplicates)) {
-            echo "Aucun contact en doublon trouvé.\n";
-            return;
-        }
-
-        echo "Contacts en doublon :\n";
-        foreach ($duplicates as $duplicate) {
-            echo "Nom : " . $duplicate['name'] . ", Total : " . $duplicate['total'] . "\n";
-        }
+        
     }
 }

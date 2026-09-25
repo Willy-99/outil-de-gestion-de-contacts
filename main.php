@@ -30,7 +30,7 @@ while (true) {
         case $line === "list":
             $command->list();
             break;
-        case $line === "Compter":
+        case strtolower($line) === "compter":
             $command->count();
             break;
         case $line === "detail":
