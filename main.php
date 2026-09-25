@@ -36,7 +36,7 @@ while (true) {
         case $line === "detail":
             $command->detail();
             break;
-        case $line === "clone contact":
+        case strtolower($line) === "clone contact":
             $command->cloneContact();
             break;
         case $line === "create":

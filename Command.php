@@ -19,7 +19,7 @@ class Command
             echo "list          - Liste tous les contacts\n";
             echo "detail        - Affiche un contact\n";
             echo "create        - Crée un contact\n";
-            echo "cloneContact  - Clone un contact\n";
+            echo "clone Contact  - Clone un contact\n";
             echo "delete        - Supprime un contact\n";
             echo "update        - Modifie un contact\n";
             echo "Compter       - Compte les contacts ou recherche les doublons\n";
@@ -57,7 +57,7 @@ class Command
             break;
 
         case "clone contact":
-            echo "CLONECONTACT\n";
+            echo "CLONE CONTACT\n";
             echo "Clone un contact existant.\n";
             echo "La recherche du contact est interactive.\n";
             echo "Vous pouvez rechercher le contact par ID, nom, email ou téléphone.\n";
@@ -341,7 +341,7 @@ class Command
                 . $contact ->getName(). ","
                 . $contact ->getEmail(). ","
                 . $contact -> getPhoneNumber() . ",";
-                
+
             $confirm = readline("Voulez-vous vraiment supprimer ce contact ? (oui/non) : ");
             while (!in_array(strtoupper($confirm), ['OUI', 'NON'], true)) {
                 echo "Réponse invalide. Utilisez 'oui' ou 'non'.\n";
